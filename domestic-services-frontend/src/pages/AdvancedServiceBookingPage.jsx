@@ -180,9 +180,11 @@ const AdvancedServiceBookingPage = () => {
 
   const fetchLocationName = async (lat, lng) => {
     try {
-      return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=en`);
+      const data = await response.json();
+      return data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
     } catch {
-      return '';
+      return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
     }
   };
 
@@ -193,9 +195,14 @@ const AdvancedServiceBookingPage = () => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setLatLng({ lat, lng });
-        const name = await fetchLocationName(lat, lng);
-        setBookingData(prev => ({ ...prev, location: name || `${lat},${lng}` }));
+        
+        const addressName = await fetchLocationName(lat, lng);
+        const coordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        const fullLocation = `${addressName} (${coordinates})`;
+        
+        setBookingData(prev => ({ ...prev, location: fullLocation }));
         setFetchingLocation(false);
+        toast.success('Location fetched successfully!');
       }, () => {
         toast.error('Unable to fetch location. Please allow location access.');
         setFetchingLocation(false);
