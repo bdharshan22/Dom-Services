@@ -27,7 +27,7 @@ This application is deployed with a decoupled architecture:
   * **Worker dashboard** to view and manage bookings
   * **Admin dashboard** for managing users and services
   * **Email notifications** for bookings & updates
-  * Secure payment integration (**Razorpay / Stripe**)
+  * Secure payment integration (**Razorpay**)
 
 ## 🛠️ Tech Stack
 
