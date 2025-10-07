@@ -214,12 +214,12 @@ const BookingForm = ({ serviceId, onClose }) => {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
+              <label className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3">
                 Property Type *
               </label>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                 {propertyTypes.map(type => (
                   <button
                     key={type}
@@ -229,18 +229,18 @@ const BookingForm = ({ serviceId, onClose }) => {
                       setBookingData(prev => ({ ...prev, propertyType: type }));
                     }}
                     style={{ pointerEvents: 'auto', zIndex: 10 }}
-                    className={`p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
+                    className={`p-3 sm:p-4 rounded-lg sm:rounded-xl border-2 transition-all duration-200 cursor-pointer text-center ${
                       bookingData.propertyType === type
                         ? 'border-blue-500 bg-blue-50 text-blue-700'
                         : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                     }`}
                   >
-                    <div className="text-2xl mb-2">
+                    <div className="text-xl sm:text-2xl mb-1 sm:mb-2">
                       {type === 'Apartment' ? '🏢' : type === 'House' ? '🏠' : 
                        type === 'Villa' ? '🏡' : type === 'Office' ? '🏢' : 
                        type === 'Shop' ? '🏪' : '🏗️'}
                     </div>
-                    <div className="font-medium">{type}</div>
+                    <div className="font-medium text-xs sm:text-sm">{type}</div>
                   </button>
                 ))}
               </div>
@@ -248,27 +248,27 @@ const BookingForm = ({ serviceId, onClose }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
+              <label className="block text-sm font-semibold text-gray-700 mb-2 sm:mb-3">
                 Service Frequency *
               </label>
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {[
                   { value: 'one-time', label: 'One-time Service', desc: 'Single service booking' },
                   { value: 'weekly', label: 'Weekly', desc: 'Recurring every week' },
                   { value: 'monthly', label: 'Monthly', desc: 'Recurring every month' }
                 ].map(freq => (
-                  <label key={freq.value} className="flex items-center p-4 border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
+                  <label key={freq.value} className="flex items-center p-3 sm:p-4 border-2 rounded-lg sm:rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
                     <input
                       type="radio"
                       name="serviceFrequency"
                       value={freq.value}
                       checked={bookingData.serviceFrequency === freq.value}
                       onChange={handleChange}
-                      className="w-4 h-4 text-blue-600"
+                      className="w-4 h-4 text-blue-600 flex-shrink-0"
                     />
                     <div className="ml-3">
-                      <div className="font-medium">{freq.label}</div>
-                      <div className="text-sm text-gray-500">{freq.desc}</div>
+                      <div className="font-medium text-sm sm:text-base">{freq.label}</div>
+                      <div className="text-xs sm:text-sm text-gray-500">{freq.desc}</div>
                     </div>
                   </label>
                 ))}
@@ -284,7 +284,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                 name="estimatedDuration"
                 value={bookingData.estimatedDuration}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-colors"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
               >
                 <option value="">Select duration</option>
                 <option value="1">1 hour</option>
@@ -300,8 +300,8 @@ const BookingForm = ({ serviceId, onClose }) => {
 
       case 2:
         return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label htmlFor="date" className="block text-sm font-semibold text-gray-700 mb-2">
                   Preferred Date *
@@ -313,7 +313,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                   value={bookingData.date}
                   onChange={handleChange}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-colors"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
                   required
                 />
                 {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
@@ -328,7 +328,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                   name="time"
                   value={bookingData.time}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-colors"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
                   required
                 />
                 {errors.time && <p className="text-red-500 text-sm mt-1">{errors.time}</p>}
@@ -339,31 +339,30 @@ const BookingForm = ({ serviceId, onClose }) => {
               <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2">
                 Service Location *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <input
                   type="text"
                   id="location"
                   name="location"
                   value={bookingData.location}
                   onChange={handleChange}
-                  placeholder="Enter your complete address"
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
                 />
                 <button
                   type="button"
                   onClick={handleFetchLocation}
                   disabled={fetchingLocation}
-                  className="w-full sm:w-auto px-2 py-1 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-1"
+                  className="w-full sm:w-auto px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 font-medium"
                 >
                   {fetchingLocation ? (
                     <>
                       <span className="animate-pulse">📍</span>
-                      <span>Getting...</span>
+                      <span>Getting Location...</span>
                     </>
                   ) : (
                     <>
                       <span>🎯</span>
-                      <span>Use GPS</span>
+                      <span>Use Current Location</span>
                     </>
                   )}
                 </button>
@@ -375,8 +374,8 @@ const BookingForm = ({ serviceId, onClose }) => {
 
       case 3:
         return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2">
                   Full Name *
@@ -387,7 +386,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                   name="fullName"
                   value={bookingData.fullName}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-colors"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
                 />
                 {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
               </div>
@@ -402,7 +401,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                   name="email"
                   value={bookingData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-colors"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
                 />
                 {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
               </div>
@@ -418,8 +417,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                 name="mobile"
                 value={bookingData.mobile}
                 onChange={handleChange}
-                placeholder="10-digit mobile number"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-colors"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
               />
               {errors.mobile && <p className="text-red-500 text-sm mt-1">{errors.mobile}</p>}
             </div>
@@ -434,7 +432,6 @@ const BookingForm = ({ serviceId, onClose }) => {
                 value={bookingData.specialInstructions}
                 onChange={handleChange}
                 rows="3"
-                placeholder="Any specific requirements or instructions..."
                 className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors resize-none"
               />
             </div>
@@ -443,43 +440,43 @@ const BookingForm = ({ serviceId, onClose }) => {
 
       case 4:
         return (
-          <div className="space-y-6">
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold mb-4">Booking Summary</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span>Service:</span>
-                  <span className="font-medium">{service?.name}</span>
+          <div className="space-y-4 sm:space-y-6">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Booking Summary</h3>
+              <div className="space-y-2 sm:space-y-3">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
+                  <span className="text-sm sm:text-base text-gray-600">Service:</span>
+                  <span className="font-medium text-sm sm:text-base">{service?.name}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Date & Time:</span>
-                  <span className="font-medium">{bookingData.date} at {bookingData.time}</span>
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
+                  <span className="text-sm sm:text-base text-gray-600">Date & Time:</span>
+                  <span className="font-medium text-sm sm:text-base">{bookingData.date} at {bookingData.time}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Property Type:</span>
-                  <span className="font-medium">{bookingData.propertyType}</span>
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
+                  <span className="text-sm sm:text-base text-gray-600">Property Type:</span>
+                  <span className="font-medium text-sm sm:text-base">{bookingData.propertyType}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Frequency:</span>
-                  <span className="font-medium">{bookingData.serviceFrequency}</span>
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
+                  <span className="text-sm sm:text-base text-gray-600">Frequency:</span>
+                  <span className="font-medium text-sm sm:text-base">{bookingData.serviceFrequency}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Location:</span>
-                  <span className="font-medium text-right max-w-xs truncate">{bookingData.location}</span>
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
+                  <span className="text-sm sm:text-base text-gray-600">Location:</span>
+                  <span className="font-medium text-sm sm:text-base break-words">{bookingData.location}</span>
                 </div>
-                <hr className="my-3" />
-                <div className="flex justify-between text-xl font-bold">
-                  <span>Total Amount:</span>
-                  <span className="text-blue-600">₹{service?.price}</span>
+                <hr className="my-2 sm:my-3" />
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
+                  <span className="text-lg sm:text-xl font-bold text-gray-800">Total Amount:</span>
+                  <span className="text-lg sm:text-xl font-bold text-blue-600">₹{service?.price}</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg sm:rounded-xl p-3 sm:p-4">
               <div className="flex items-start">
-                <span className="text-yellow-600 mr-2">⚠️</span>
-                <div className="text-sm text-yellow-800">
-                  <p className="font-medium mb-1">Important Notes:</p>
+                <span className="text-yellow-600 mr-2 flex-shrink-0">⚠️</span>
+                <div className="text-xs sm:text-sm text-yellow-800">
+                  <p className="font-medium mb-1 sm:mb-2">Important Notes:</p>
                   <ul className="list-disc list-inside space-y-1">
                     <li>Payment will be processed securely through Razorpay</li>
                     <li>You will receive a confirmation email after successful payment</li>
@@ -563,23 +560,23 @@ const BookingForm = ({ serviceId, onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 border-t bg-gray-50 gap-3 sm:gap-0">
+        <div className="flex justify-between items-center p-3 sm:p-4 border-t bg-gray-50 gap-2">
           <button
             onClick={handlePrev}
             disabled={currentStep === 1}
-            className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-gray-200 text-gray-700 rounded-lg sm:rounded-xl hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-3 sm:px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
           >
             Previous
           </button>
           
-          <div className="text-xs sm:text-sm text-gray-500 order-first sm:order-none">
+          <div className="text-xs sm:text-sm text-gray-500 text-center">
             Step {currentStep} of {steps.length}
           </div>
 
           {currentStep < 4 ? (
             <button
               onClick={handleNext}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-blue-600 text-white rounded-lg sm:rounded-xl hover:bg-blue-700 transition-colors"
+              className="px-3 sm:px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
             >
               Next
             </button>
@@ -587,7 +584,7 @@ const BookingForm = ({ serviceId, onClose }) => {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full sm:w-auto px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg sm:rounded-xl hover:from-green-700 hover:to-blue-700 disabled:opacity-50 transition-colors font-semibold"
+              className="px-4 sm:px-6 py-2 text-sm bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg hover:from-green-700 hover:to-blue-700 disabled:opacity-50 transition-colors font-semibold"
             >
               {loading ? 'Processing...' : `Pay ₹${service.price}`}
             </button>

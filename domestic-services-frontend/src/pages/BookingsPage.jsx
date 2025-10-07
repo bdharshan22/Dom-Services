@@ -131,71 +131,71 @@ const BookingsPage = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-pink-600/10 rounded-full blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
       <div className="relative z-10">
-        <div className="max-w-7xl mx-auto py-4 sm:py-8 px-4">
+        <div className="max-w-7xl mx-auto py-4 sm:py-8 px-3 sm:px-4">
         {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mb-2 font-heading">My Dashboard</h1>
-          <p className="text-gray-300 text-base sm:text-lg">Welcome back, {user?.name || 'Customer'}! Track your bookings and manage your services.</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mb-2 font-heading">My Dashboard</h1>
+          <p className="text-gray-300 text-sm sm:text-base lg:text-lg">Welcome back, {user?.name || 'Customer'}! Track your bookings and manage your services.</p>
         </div>
 
         {/* Enhanced Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-gradient-to-br from-blue-600/20 to-purple-700/20 backdrop-blur-xl border border-white/20 rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <span className="text-blue-300 text-sm font-medium">Total</span>
+              <span className="text-blue-600 text-sm font-medium">Total</span>
             </div>
-            <h3 className="text-gray-300 text-sm font-medium mb-1">All Bookings</h3>
-            <p className="text-3xl font-bold text-white">{bookings.length}</p>
+            <h3 className="text-secondary-600 text-sm font-medium mb-1">All Bookings</h3>
+            <p className="text-3xl font-bold text-secondary-800">{bookings.length}</p>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-600/20 to-pink-700/20 backdrop-blur-xl border border-white/20 rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl flex items-center justify-center">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                 </svg>
               </div>
-              <span className="text-green-300 text-sm font-medium">Spent</span>
+              <span className="text-green-600 text-sm font-medium">Spent</span>
             </div>
-            <h3 className="text-gray-300 text-sm font-medium mb-1">Total Amount</h3>
-            <p className="text-3xl font-bold text-white">₹{stats.totalSpent}</p>
+            <h3 className="text-secondary-600 text-sm font-medium mb-1">Total Amount</h3>
+            <p className="text-3xl font-bold text-secondary-800">₹{stats.totalSpent}</p>
           </div>
           
-          <div className="bg-gradient-to-br from-gray-800/40 to-slate-800/40 backdrop-blur-xl border border-white/20 rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-blue-500 rounded-2xl flex items-center justify-center">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span className="text-blue-300 text-sm font-medium">Done</span>
+              <span className="text-blue-600 text-sm font-medium">Done</span>
             </div>
-            <h3 className="text-gray-300 text-sm font-medium mb-1">Completed</h3>
-            <p className="text-3xl font-bold text-white">{stats.completedServices}</p>
+            <h3 className="text-secondary-600 text-sm font-medium mb-1">Completed</h3>
+            <p className="text-3xl font-bold text-secondary-800">{stats.completedServices}</p>
           </div>
           
-          <div className="bg-gradient-to-br from-blue-600/20 to-purple-700/20 backdrop-blur-xl border border-white/20 rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3z" />
                 </svg>
               </div>
-              <span className="text-purple-300 text-sm font-medium">Scheduled</span>
+              <span className="text-purple-600 text-sm font-medium">Scheduled</span>
             </div>
-            <h3 className="text-gray-300 text-sm font-medium mb-1">Upcoming</h3>
-            <p className="text-3xl font-bold text-white">{stats.upcomingServices}</p>
+            <h3 className="text-secondary-600 text-sm font-medium mb-1">Upcoming</h3>
+            <p className="text-3xl font-bold text-secondary-800">{stats.upcomingServices}</p>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-2 mb-6 sm:mb-8 border border-white/20">
-          <div className="flex space-x-1">
+        <div className="bg-white rounded-2xl shadow-lg p-2 mb-8 border border-white/20">
+          <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-1">
             {[
               { id: 'overview', label: 'Overview', icon: '📊' },
               { id: 'all', label: 'All Bookings', icon: '📋', count: bookings.length },
@@ -205,17 +205,19 @@ const BookingsPage = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 px-2 sm:px-4 rounded-xl font-medium text-sm sm:text-base transition-all duration-300 ${
+                className={`flex-1 flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 px-2 sm:px-4 rounded-xl font-medium text-sm sm:text-base transition-all duration-200 ${
                   activeTab === tab.id
-                    ? 'bg-primary-600 text-white shadow-lg'
-                    : 'text-secondary-600 hover:text-primary-600 hover:bg-primary-50'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                <span>{tab.icon}</span>
+                <span className="text-sm sm:text-base">{tab.icon}</span>
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
                   <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                    activeTab === tab.id ? 'bg-white/20' : 'bg-primary-100 text-primary-600'
+                    activeTab === tab.id
+                      ? 'bg-white/20 text-white'
+                      : 'bg-blue-100 text-blue-600'
                   }`}>
                     {tab.count}
                   </span>
@@ -339,9 +341,9 @@ const BookingsPage = () => {
             </div>
 
             {/* Bookings Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredBookings.map(booking => (
-                <div key={booking._id} className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-secondary-200 hover:shadow-xl transition-all duration-300">
+                <div key={booking._id} className="bg-white rounded-2xl shadow-lg p-6 border border-secondary-200 hover:shadow-xl transition-all duration-300">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h4 className="text-lg font-bold text-secondary-800">{booking.serviceId?.name || booking.serviceName || 'Unknown Service'}</h4>
@@ -379,7 +381,7 @@ const BookingsPage = () => {
                     </div>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row gap-2">
+                  <div className="flex gap-2">
                     <button
                       onClick={() => setSelectedBooking(booking)}
                       className="flex-1 bg-primary-100 text-primary-700 py-2 px-4 rounded-lg hover:bg-primary-200 transition-all duration-300 font-medium text-sm"
