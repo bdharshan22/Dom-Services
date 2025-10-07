@@ -27,13 +27,15 @@ export const AuthProvider = ({ children }) => {
   // Login without role param - backend determines role automatically
   const login = async (email, password) => {
     try {
+      console.log('Attempting login with:', { email, apiBaseURL: api.defaults.baseURL });
       const res = await api.post('/auth/login', { email, password });
+      console.log('Login response:', res.data);
       localStorage.setItem('token', res.data.token);
       // Store user with role from backend
       setUser(res.data.user || res.data);
       return res.data.user || res.data;
     } catch (err) {
-      console.error('Login failed', err);
+      console.error('Login failed:', err.response?.data || err.message);
       throw err;
     }
   };
