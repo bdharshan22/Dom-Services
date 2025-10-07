@@ -339,7 +339,7 @@ const BookingForm = ({ serviceId, onClose }) => {
               <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2">
                 Service Location *
               </label>
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+              <div className="space-y-2">
                 <input
                   type="text"
                   id="location"
@@ -347,15 +347,25 @@ const BookingForm = ({ serviceId, onClose }) => {
                   value={bookingData.location}
                   onChange={handleChange}
                   placeholder="Enter your complete address"
-                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
                 />
                 <button
                   type="button"
                   onClick={handleFetchLocation}
                   disabled={fetchingLocation}
-                  className="px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-blue-600 text-white rounded-lg sm:rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 whitespace-nowrap"
+                  className="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-1"
                 >
-                  {fetchingLocation ? '📍 Getting...' : '🎯 Use GPS'}
+                  {fetchingLocation ? (
+                    <>
+                      <span className="animate-pulse">📍</span>
+                      <span>Getting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>🎯</span>
+                      <span>Use GPS</span>
+                    </>
+                  )}
                 </button>
               </div>
               {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
@@ -548,7 +558,7 @@ const BookingForm = ({ serviceId, onClose }) => {
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-96" style={{ pointerEvents: 'auto' }}>
+        <div className="p-4 sm:p-6 overflow-y-auto max-h-[50vh] sm:max-h-96" style={{ pointerEvents: 'auto' }}>
           {renderStepContent()}
         </div>
 
