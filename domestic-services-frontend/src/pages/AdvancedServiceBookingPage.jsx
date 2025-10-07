@@ -180,9 +180,8 @@ const AdvancedServiceBookingPage = () => {
 
   const fetchLocationName = async (lat, lng) => {
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=en`);
-      const data = await response.json();
-      return data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      const response = await api.get(`/location/reverse-geocode?lat=${lat}&lng=${lng}`);
+      return response.data.address || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
     } catch {
       return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
     }

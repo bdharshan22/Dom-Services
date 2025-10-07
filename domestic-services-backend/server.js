@@ -12,6 +12,7 @@ import serviceRoutes from "./routes/services.js";
 import bookingRoutes from "./routes/bookings.js";
 import paymentRoutes from "./routes/payments.js";
 import adminRoutes from "./routes/admin.js";
+import locationRoutes from "./routes/location.js";
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/location", locationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

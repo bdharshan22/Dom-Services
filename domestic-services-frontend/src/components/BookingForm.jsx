@@ -102,25 +102,17 @@ const BookingForm = ({ serviceId, onClose }) => {
     }
   };
 
-  const fetchLocationName = async (lat, lng) => {
-    try {
-      // In a real app, you would use a Geocoding API here.
-      return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-    } catch {
-      return '';
-    }
-  };
-
-  const handleFetchLocation = async () => {
+  const handleFetchLocation = () => {
     setFetchingLocation(true);
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
+      navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setLatLng({ lat, lng });
-        const name = await fetchLocationName(lat, lng);
-        setBookingData(prev => ({ ...prev, location: name || `${lat},${lng}` }));
+        const coordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        setBookingData(prev => ({ ...prev, location: coordinates }));
         setFetchingLocation(false);
+        toast.success('Location coordinates added successfully!');
       }, () => {
         toast.error('Unable to fetch location. Please allow location access.');
         setFetchingLocation(false);
