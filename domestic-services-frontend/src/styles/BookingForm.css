@@ -309,15 +309,20 @@
   .property-card {
     padding: 16px;
   }
-  
+
   .time-slot {
     padding: 8px 12px;
     font-size: 14px;
   }
-  
+
   .form-input {
     padding: 12px;
     font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  #date {
+    position: relative;
+    z-index: 10;
   }
 }
 

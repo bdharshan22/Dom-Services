@@ -353,7 +353,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                   type="button"
                   onClick={handleFetchLocation}
                   disabled={fetchingLocation}
-                  className="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-1"
+                  className="w-full sm:w-auto px-2 py-1 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-1"
                 >
                   {fetchingLocation ? (
                     <>
