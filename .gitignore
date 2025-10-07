@@ -1,0 +1,24 @@
+# Dependencies
+/node_modules
+/domestic-services-backend/node_modules
+/domestic-services-frontend/node_modules
+
+
+# Env files
+.env
+domestic-services-backend/.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+/dist
+/out
+
+# Misc
+.DS_Store
+
+TODO.md
+

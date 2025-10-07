@@ -1,0 +1,22 @@
+<!-- Royalty-free SVG from unDraw: https://undraw.co/illustrations -->
+<!-- Filename: home_cleaning.svg -->
+<svg width="400" height="300" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="800" height="600" fill="#FFF8E1"/>
+<g>
+<ellipse cx="400" cy="520" rx="320" ry="40" fill="#FFE082"/>
+<rect x="250" y="320" width="300" height="120" rx="24" fill="#4DD0E1"/>
+<rect x="270" y="340" width="80" height="60" rx="12" fill="#FFF9C4"/>
+<rect x="370" y="340" width="80" height="60" rx="12" fill="#A5D6A7"/>
+<rect x="470" y="340" width="60" height="60" rx="12" fill="#FFD54F"/>
+<rect x="320" y="420" width="160" height="30" rx="10" fill="#FFF8E1"/>
+<circle cx="310" cy="390" r="12" fill="#FFD54F"/>
+<circle cx="490" cy="390" r="12" fill="#FFD54F"/>
+<rect x="390" y="370" width="20" height="30" rx="6" fill="#FFD54F"/>
+<!-- Cleaning tools -->
+<rect x="600" y="350" width="16" height="60" rx="8" fill="#FF7043"/>
+<rect x="610" y="400" width="36" height="12" rx="6" fill="#FFF9C4"/>
+<rect x="150" y="370" width="16" height="60" rx="8" fill="#81C784"/>
+<rect x="130" y="420" width="36" height="12" rx="6" fill="#FFF9C4"/>
+</g>
+<text x="400" y="250" text-anchor="middle" fill="#4DD0E1" font-size="44" font-family="Arial" font-weight="bold">Domestic Help</text>
+</svg>

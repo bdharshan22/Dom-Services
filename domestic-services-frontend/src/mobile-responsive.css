@@ -1,0 +1,202 @@
+/* Mobile Responsive Enhancements */
+
+/* Base mobile styles */
+@media (max-width: 640px) {
+  /* Ensure full width on mobile */
+  .mobile-full-width {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+  
+  /* Mobile-friendly padding */
+  .mobile-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Mobile text sizing */
+  .mobile-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  /* Tighter spacing on mobile */
+  .mobile-spacing-tight {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Mobile card adjustments */
+  .mobile-card {
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  /* Mobile button adjustments */
+  .mobile-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 0.75rem;
+  }
+  
+  /* Mobile form inputs */
+  .mobile-input {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+  }
+  
+  /* Mobile grid adjustments */
+  .mobile-grid-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  /* Mobile navigation */
+  .mobile-nav {
+    padding: 0.75rem 1rem;
+  }
+  
+  /* Mobile modal adjustments */
+  .mobile-modal {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+}
+
+/* Touch-friendly sizing for tablets and mobile */
+@media (max-width: 768px) {
+  /* Touch-friendly buttons */
+  .btn-touch {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.75rem 1rem;
+  }
+  
+  /* Touch-friendly inputs */
+  .input-touch {
+    min-height: 44px;
+    padding: 0.75rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Touch-friendly select */
+  .select-touch {
+    min-height: 44px;
+    padding: 0.75rem;
+    font-size: 16px;
+  }
+  
+  /* Improved scrolling */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+  }
+  
+  /* Prevent body scroll when modal is open */
+  .mobile-no-scroll {
+    overflow: hidden;
+  }
+  
+  /* Mobile table responsiveness */
+  .mobile-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  /* Mobile card stack */
+  .mobile-stack {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 475px) {
+  /* Very small screen adjustments */
+  .xs-text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .xs-padding-sm {
+    padding: 0.5rem;
+  }
+  
+  .xs-margin-sm {
+    margin: 0.5rem;
+  }
+  
+  /* Compact buttons for very small screens */
+  .xs-btn-compact {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .landscape-mobile {
+    height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .landscape-mobile-header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .landscape-mobile-content {
+    padding: 1rem;
+  }
+}
+
+/* High DPI mobile screens */
+@media (-webkit-min-device-pixel-ratio: 2) and (max-width: 768px) {
+  .retina-mobile {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Mobile-specific animations */
+@media (max-width: 768px) {
+  /* Reduce motion for mobile performance */
+  .mobile-reduce-motion {
+    animation-duration: 0.3s;
+    transition-duration: 0.3s;
+  }
+  
+  /* Mobile-friendly hover states (touch devices) */
+  .mobile-touch:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Accessibility improvements for mobile */
+@media (max-width: 768px) {
+  /* Larger focus indicators on mobile */
+  .mobile-focus:focus {
+    outline: 3px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  /* Better contrast for mobile */
+  .mobile-high-contrast {
+    color: #000;
+    background-color: #fff;
+  }
+}
+
+/* Print styles for mobile */
+@media print {
+  .mobile-print-hide {
+    display: none !important;
+  }
+  
+  .mobile-print-show {
+    display: block !important;
+  }
+}

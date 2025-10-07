@@ -1,0 +1,18 @@
+// You can replace this with a more relevant image later.
+// This is a royalty-free illustration from unDraw (https://undraw.co/illustrations)
+// Downloaded and saved as home_services.svg
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="800" height="600" fill="#F3F4F6"/>
+<g>
+<ellipse cx="400" cy="500" rx="320" ry="40" fill="#E5E7EB"/>
+<rect x="250" y="300" width="300" height="150" rx="20" fill="#6366F1"/>
+<rect x="270" y="320" width="80" height="60" rx="10" fill="#FBBF24"/>
+<rect x="370" y="320" width="80" height="60" rx="10" fill="#10B981"/>
+<rect x="470" y="320" width="60" height="60" rx="10" fill="#F472B6"/>
+<rect x="320" y="400" width="160" height="30" rx="10" fill="#F3F4F6"/>
+<circle cx="310" cy="370" r="10" fill="#F59E42"/>
+<circle cx="490" cy="370" r="10" fill="#F59E42"/>
+<rect x="390" y="350" width="20" height="30" rx="5" fill="#F59E42"/>
+</g>
+<text x="400" y="250" text-anchor="middle" fill="#6366F1" font-size="48" font-family="Arial" font-weight="bold">Domestic Services</text>
+</svg>

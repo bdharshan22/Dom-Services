@@ -1,0 +1,353 @@
+/* Hide scrollbars for all browsers */
+
+/* Hide scrollbars but allow scrolling */
+html, body {
+  overflow: auto !important;
+}
+
+/* Hide scrollbar for Webkit browsers */
+body::-webkit-scrollbar, html::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Hide scrollbar for Firefox */
+body {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Webkit browsers */
+body::-webkit-scrollbar, html::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+body {
+  scrollbar-width: none;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import mobile responsive utilities */
+@import './mobile-responsive.css';
+
+.btn-primary {
+  @apply bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors duration-300;
+}
+
+.input {
+  @apply w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500;
+}
+
+/* Enhanced UI Components */
+.btn-gradient {
+  @apply bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:from-primary-600 hover:to-accent-600 transition-all duration-300 transform hover:scale-105;
+}
+
+.btn-outline {
+  @apply border-2 border-primary-500 text-primary-500 font-semibold py-3 px-6 rounded-xl hover:bg-primary-500 hover:text-white transition-all duration-300;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-medium border border-neutral-200 p-6;
+}
+
+.card-hover {
+  @apply bg-white rounded-2xl shadow-medium border border-neutral-200 p-6 hover:shadow-large transition-all duration-300 transform hover:-translate-y-1;
+}
+
+.form-input {
+  @apply w-full px-4 py-3 border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+}
+
+.form-input-error {
+  @apply w-full px-4 py-3 border border-red-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 bg-red-50;
+}
+
+.step-indicator {
+  @apply w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300;
+}
+
+.step-active {
+  @apply bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-lg;
+}
+
+.step-completed {
+  @apply bg-green-500 text-white;
+}
+
+.step-pending {
+  @apply bg-neutral-200 text-neutral-500;
+}
+
+.hero-section {
+  @apply bg-gradient-to-br from-primary-50 via-secondary-50 to-accent-50 min-h-screen flex items-center justify-center;
+}
+
+.glass-effect {
+  @apply bg-white bg-opacity-80 backdrop-blur-lg border border-white border-opacity-20;
+}
+
+.shadow-soft {
+  box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-medium {
+  box-shadow: 0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-large {
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
+}
+
+/* Animation utilities */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out;
+}
+
+/* Loading spinner */
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Enhanced focus styles */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
+
+/* Text gradient */
+.text-gradient {
+  @apply bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent;
+}
+
+/* Enhanced animations */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.8s ease-out;
+}
+
+/* Glass morphism effect */
+.glass {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl;
+}
+
+/* Enhanced button styles */
+.btn-primary-enhanced {
+  @apply bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold py-3 px-8 rounded-xl shadow-lg hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
+
+.btn-secondary-enhanced {
+  @apply bg-gradient-to-r from-accent-500 to-accent-600 text-white font-semibold py-3 px-8 rounded-xl shadow-lg hover:from-accent-600 hover:to-accent-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2;
+}
+
+/* Accessibility improvements */
+.focus-visible {
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+}
+
+/* Advanced Loading Spinner Animations */
+.animation-reverse {
+  animation-direction: reverse;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animation-delay-700 {
+  animation-delay: 700ms;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1000ms;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2000ms;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4000ms;
+}
+
+/* Mobile-specific utilities */
+@media (max-width: 640px) {
+  .mobile-full-width {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+  
+  .mobile-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .mobile-spacing-tight {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Touch-friendly button sizing */
+@media (max-width: 768px) {
+  .btn-touch {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.75rem 1rem;
+  }
+  
+  .input-touch {
+    min-height: 44px;
+    padding: 0.75rem;
+  }
+}
+
+/* Improved scrolling on mobile */
+@media (max-width: 768px) {
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+  }
+  
+  .mobile-no-scroll {
+    overflow: hidden;
+  }
+  
+  /* Fix date input on mobile */
+  .mobile-date-input {
+    position: relative;
+    z-index: 1000;
+    background-color: white !important;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  .mobile-date-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0;
+    padding: 0;
+    color: transparent;
+    background: transparent;
+    cursor: pointer;
+    opacity: 1;
+    z-index: 1001;
+  }
+  
+  /* Force date input to be clickable on all mobile devices */
+  input[type="date"] {
+    position: relative;
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 1;
+    background: transparent;
+    color: transparent;
+  }
+}
