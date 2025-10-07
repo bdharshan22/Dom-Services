@@ -3,6 +3,7 @@ services:
     name: domestic-services-backend
     env: node
     plan: free
+    rootDir: domestic-services-backend
     buildCommand: npm install
     startCommand: npm start
     envVars:

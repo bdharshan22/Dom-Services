@@ -3,6 +3,9 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./config/db.js";
 
+console.log('Starting server...');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('PORT:', process.env.PORT);
 
 import authRoutes from "./routes/auth.js";
 import serviceRoutes from "./routes/services.js";
@@ -21,8 +24,20 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Connect DB
-connectDB();
+// Root route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Domestic Services API is running!',
+    version: '1.0.0',
+    endpoints: {
+      auth: '/api/auth',
+      services: '/api/services',
+      bookings: '/api/bookings',
+      payments: '/api/payments',
+      admin: '/api/admin'
+    }
+  });
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -36,6 +51,33 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Route not found', path: req.originalUrl });
+});
+
 // Start Server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const startServer = async () => {
+  try {
+    // Connect DB first
+    await connectDB();
+    console.log('Database connected successfully');
+    
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
