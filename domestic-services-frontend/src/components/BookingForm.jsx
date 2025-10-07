@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import { useAuth } from './AuthProvider';
 import { toast } from 'react-toastify';
+import PaymentSuccessModal from './PaymentSuccessModal';
 
 const BookingForm = ({ serviceId, onClose }) => {
   const { user } = useAuth();
@@ -24,6 +25,8 @@ const BookingForm = ({ serviceId, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [fetchingLocation, setFetchingLocation] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successBookingData, setSuccessBookingData] = useState(null);
 
   const steps = [
     { id: 1, title: 'Service', icon: '🛠️' },
@@ -159,10 +162,28 @@ const BookingForm = ({ serviceId, onClose }) => {
               });
 
               if (verificationResponse.status === 201) {
-                toast.success('Payment successful! Check your WhatsApp & SMS for confirmation.');
+                const bookingResult = verificationResponse.data.booking;
+                setSuccessBookingData({
+                  serviceName: service.name,
+                  date: bookingData.date,
+                  time: bookingData.time,
+                  location: bookingData.location,
+                  amount: service.price,
+                  bookingId: bookingResult._id
+                });
+                
+                // Force modal to show with delay for mobile
+                setTimeout(() => {
+                  setShowSuccessModal(true);
+                }, 100);
+                
+                // Vibrate on mobile for feedback
+                if ('vibrate' in navigator) {
+                  navigator.vibrate([200, 100, 200]);
+                }
+                
                 const count = parseInt(localStorage.getItem('bookingCount') || '0') + 1;
                 localStorage.setItem('bookingCount', count.toString());
-                onClose();
               }
             } catch (err) {
               toast.error('Payment verification failed.');
@@ -456,8 +477,17 @@ const BookingForm = ({ serviceId, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+    <>
+      <PaymentSuccessModal 
+        isOpen={showSuccessModal} 
+        onClose={() => {
+          setShowSuccessModal(false);
+          onClose();
+        }} 
+        bookingData={successBookingData} 
+      />
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
           <div>
@@ -546,7 +576,8 @@ const BookingForm = ({ serviceId, onClose }) => {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
