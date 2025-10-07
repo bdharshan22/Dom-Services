@@ -339,7 +339,7 @@ const BookingForm = ({ serviceId, onClose }) => {
               <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2">
                 Service Location *
               </label>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <input
                   type="text"
                   id="location"
@@ -347,15 +347,15 @@ const BookingForm = ({ serviceId, onClose }) => {
                   value={bookingData.location}
                   onChange={handleChange}
                   placeholder="Enter your complete address"
-                  className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-colors"
+                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors"
                 />
                 <button
                   type="button"
                   onClick={handleFetchLocation}
                   disabled={fetchingLocation}
-                  className="px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50"
+                  className="px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-blue-600 text-white rounded-lg sm:rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 whitespace-nowrap"
                 >
-                  {fetchingLocation ? '📍' : '🎯'}
+                  {fetchingLocation ? '📍 Getting...' : '🎯 Use GPS'}
                 </button>
               </div>
               {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
@@ -416,16 +416,16 @@ const BookingForm = ({ serviceId, onClose }) => {
 
             <div>
               <label htmlFor="specialInstructions" className="block text-sm font-semibold text-gray-700 mb-2">
-                Special Instructions
+                Additional Preferences
               </label>
               <textarea
                 id="specialInstructions"
                 name="specialInstructions"
                 value={bookingData.specialInstructions}
                 onChange={handleChange}
-                rows="4"
+                rows="3"
                 placeholder="Any specific requirements or instructions..."
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 transition-colors resize-none"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 transition-colors resize-none"
               />
             </div>
           </div>
@@ -500,8 +500,8 @@ const BookingForm = ({ serviceId, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <div>
@@ -553,23 +553,23 @@ const BookingForm = ({ serviceId, onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-between items-center p-6 border-t bg-gray-50">
+        <div className="flex flex-col sm:flex-row justify-between items-center p-4 sm:p-6 border-t bg-gray-50 gap-3 sm:gap-0">
           <button
             onClick={handlePrev}
             disabled={currentStep === 1}
-            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-gray-200 text-gray-700 rounded-lg sm:rounded-xl hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Previous
           </button>
           
-          <div className="text-sm text-gray-500">
+          <div className="text-xs sm:text-sm text-gray-500 order-first sm:order-none">
             Step {currentStep} of {steps.length}
           </div>
 
           {currentStep < 4 ? (
             <button
               onClick={handleNext}
-              className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-blue-600 text-white rounded-lg sm:rounded-xl hover:bg-blue-700 transition-colors"
             >
               Next
             </button>
@@ -577,7 +577,7 @@ const BookingForm = ({ serviceId, onClose }) => {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="px-8 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-xl hover:from-green-700 hover:to-blue-700 disabled:opacity-50 transition-colors font-semibold"
+              className="w-full sm:w-auto px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg sm:rounded-xl hover:from-green-700 hover:to-blue-700 disabled:opacity-50 transition-colors font-semibold"
             >
               {loading ? 'Processing...' : `Pay ₹${service.price}`}
             </button>
