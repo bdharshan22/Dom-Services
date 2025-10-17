@@ -197,8 +197,16 @@ const BookingForm = ({ serviceId, onClose }) => {
                 // Show success notification immediately
                 toast.success('🎉 Payment successful! Booking confirmed!');
                 
-                // Use utility function to show modal properly
-                showPaymentSuccessModal(setShowSuccessModal, successData);
+                // Show modal immediately without delay
+                setSuccessBookingData(successData);
+                setShowSuccessModal(true);
+                document.body.style.overflow = 'hidden';
+                document.body.classList.add('modal-open');
+                
+                // Vibrate on mobile for feedback
+                if ('vibrate' in navigator) {
+                  navigator.vibrate([200, 100, 200]);
+                }
                 
                 const count = parseInt(localStorage.getItem('bookingCount') || '0') + 1;
                 localStorage.setItem('bookingCount', count.toString());

@@ -9,18 +9,15 @@ const PaymentSuccessModal = ({ isOpen, onClose, bookingData }) => {
 
   useEffect(() => {
     if (isOpen) {
-      // Small delay to ensure proper rendering
-      const showTimer = setTimeout(() => {
-        setShowModal(true);
-      }, 50);
+      // Show modal immediately
+      setShowModal(true);
       
-      // Auto-close after 15 seconds on mobile
+      // Auto-close after 8 seconds
       const autoCloseTimer = setTimeout(() => {
         handleClose();
-      }, 15000);
+      }, 8000);
       
       return () => {
-        clearTimeout(showTimer);
         clearTimeout(autoCloseTimer);
       };
     }
@@ -159,7 +156,10 @@ const PaymentSuccessModal = ({ isOpen, onClose, bookingData }) => {
           {/* Action Buttons */}
           <div className="space-y-3">
             <button
-              onClick={() => window.location.href = '/bookings'}
+              onClick={() => {
+                handleClose();
+                setTimeout(() => window.location.href = '/bookings', 100);
+              }}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg transition-all duration-300"
             >
               View My Bookings

@@ -5,10 +5,8 @@ export const showPaymentSuccessModal = (setShowModal, bookingData) => {
   document.body.style.overflow = 'hidden';
   document.body.classList.add('modal-open');
   
-  // Force modal to show with proper timing
-  setTimeout(() => {
-    setShowModal(true);
-  }, 100);
+  // Show modal immediately
+  setShowModal(true);
   
   // Vibrate on mobile for feedback
   if ('vibrate' in navigator) {
