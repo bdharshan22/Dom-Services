@@ -1,37 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { FaCheckCircle, FaTimes, FaEnvelope, FaCalendarAlt, FaClock, FaMapMarkerAlt, FaDollarSign } from 'react-icons/fa';
+import { hidePaymentSuccessModal } from '../utils/modalUtils';
 import '../mobile-modal-fix.css';
+import '../styles/PaymentModal.css';
 
 const PaymentSuccessModal = ({ isOpen, onClose, bookingData }) => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
-      setShowModal(true);
-      // Auto-close after 10 seconds on mobile
-      const timer = setTimeout(() => {
+      // Small delay to ensure proper rendering
+      const showTimer = setTimeout(() => {
+        setShowModal(true);
+      }, 50);
+      
+      // Auto-close after 15 seconds on mobile
+      const autoCloseTimer = setTimeout(() => {
         handleClose();
-      }, 10000);
-      return () => clearTimeout(timer);
+      }, 15000);
+      
+      return () => {
+        clearTimeout(showTimer);
+        clearTimeout(autoCloseTimer);
+      };
     }
   }, [isOpen]);
 
   const handleClose = () => {
-    setShowModal(false);
-    setTimeout(() => {
-      onClose();
-    }, 300);
+    hidePaymentSuccessModal(setShowModal, onClose);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="payment-success-modal fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" style={{ zIndex: 9999 }}>
+    <div 
+      className="payment-success-modal fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm" 
+      style={{ zIndex: 99999 }}
+      onClick={(e) => e.target === e.currentTarget && handleClose()}
+    >
       <div 
         className={`modal-content bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto transform transition-all duration-300 mobile-safe-area ${
           showModal ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
         }`}
-        style={{ zIndex: 10000 }}
+        style={{ zIndex: 100000 }}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 rounded-t-3xl text-white relative">

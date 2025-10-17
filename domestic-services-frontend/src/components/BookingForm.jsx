@@ -3,6 +3,7 @@ import { api } from '../api';
 import { useAuth } from './AuthProvider';
 import { toast } from 'react-toastify';
 import PaymentSuccessModal from './PaymentSuccessModal';
+import { showPaymentSuccessModal, requestNotificationPermission } from '../utils/modalUtils';
 
 const BookingForm = ({ serviceId, onClose }) => {
   const { user } = useAuth();
@@ -48,6 +49,9 @@ const BookingForm = ({ serviceId, onClose }) => {
       }
     };
     fetchService();
+    
+    // Request notification permission on component mount
+    requestNotificationPermission();
   }, [serviceId, onClose]);
 
   const validateStep = (step) => {
@@ -105,17 +109,27 @@ const BookingForm = ({ serviceId, onClose }) => {
     }
   };
 
-  const handleFetchLocation = () => {
+  const handleFetchLocation = async () => {
     setFetchingLocation(true);
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setLatLng({ lat, lng });
-        const coordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-        setBookingData(prev => ({ ...prev, location: coordinates }));
+        
+        try {
+          // Get full address using reverse geocoding
+          const response = await api.get(`/location/reverse-geocode?lat=${lat}&lng=${lng}`);
+          const fullAddress = response.data.address || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+          setBookingData(prev => ({ ...prev, location: fullAddress }));
+          toast.success('Location fetched successfully!');
+        } catch (error) {
+          // Fallback to coordinates if reverse geocoding fails
+          const coordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+          setBookingData(prev => ({ ...prev, location: coordinates }));
+          toast.success('Location coordinates added successfully!');
+        }
         setFetchingLocation(false);
-        toast.success('Location coordinates added successfully!');
       }, () => {
         toast.error('Unable to fetch location. Please allow location access.');
         setFetchingLocation(false);
@@ -154,6 +168,7 @@ const BookingForm = ({ serviceId, onClose }) => {
           description: service.description,
           order_id: orderId,
           handler: async function (response) {
+            console.log('Payment successful, processing...', response);
             try {
               const verificationResponse = await api.post('/payments/verify-payment', {
                 razorpay_order_id: response.razorpay_order_id,
@@ -161,47 +176,72 @@ const BookingForm = ({ serviceId, onClose }) => {
                 razorpay_signature: response.razorpay_signature,
               });
 
+              console.log('Verification response:', verificationResponse);
+
               if (verificationResponse.status === 201) {
                 const bookingResult = verificationResponse.data.booking;
-                setSuccessBookingData({
+                const successData = {
                   serviceName: service.name,
                   date: bookingData.date,
                   time: bookingData.time,
                   location: bookingData.location,
                   amount: service.price,
                   bookingId: bookingResult._id
-                });
+                };
                 
-                // Force modal to show with delay for mobile
-                setTimeout(() => {
-                  setShowSuccessModal(true);
-                }, 100);
+                setSuccessBookingData(successData);
                 
-                // Vibrate on mobile for feedback
-                if ('vibrate' in navigator) {
-                  navigator.vibrate([200, 100, 200]);
-                }
+                // Show success notification immediately
+                toast.success('🎉 Payment successful! Booking confirmed!');
+                
+                // Use utility function to show modal properly
+                showPaymentSuccessModal(setShowSuccessModal, successData);
                 
                 const count = parseInt(localStorage.getItem('bookingCount') || '0') + 1;
                 localStorage.setItem('bookingCount', count.toString());
+                
+                console.log('Payment success modal should be showing now');
+              } else {
+                throw new Error('Payment verification failed');
               }
             } catch (err) {
-              toast.error('Payment verification failed.');
+              console.error('Payment verification error:', err);
+              toast.error('Payment verification failed. Please contact support.');
             } finally {
               setLoading(false);
             }
           },
+          modal: {
+            ondismiss: function() {
+              setLoading(false);
+              console.log('Payment modal dismissed');
+            }
+          },
           prefill: {
-            name: user.name,
-            email: user.email,
+            name: bookingData.fullName || user.name,
+            email: bookingData.email || user.email,
+            contact: bookingData.mobile
           },
           theme: {
             color: '#3B82F6',
           },
+          retry: {
+            enabled: true,
+            max_count: 3
+          },
         };
 
         const rzp = new window.Razorpay(options);
+        
+        // Add error handler
+        rzp.on('payment.failed', function (response) {
+          console.error('Payment failed:', response.error);
+          toast.error(`Payment failed: ${response.error.description}`);
+          setLoading(false);
+        });
+        
         rzp.open();
+        console.log('Razorpay modal opened');
       } catch (err) {
         toast.error('Failed to create order. Please try again.');
         setLoading(false);
@@ -231,7 +271,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                       key={type}
                       type="button"
                       onClick={() => handleChange({ target: { name: 'propertyType', value: type } })}
-                      className={`p-3 rounded-lg border-2 transition-all duration-200 cursor-pointer text-center ${
+                      className={`property-type-btn p-3 rounded-lg border-2 transition-all duration-200 cursor-pointer text-center min-h-[60px] ${
                         bookingData.propertyType === type
                           ? 'border-blue-500 bg-blue-50 text-blue-700'
                           : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -312,21 +352,24 @@ const BookingForm = ({ serviceId, onClose }) => {
                     value={bookingData.date}
                     onChange={handleChange}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors bg-white"
+                    style={{ fontSize: '16px' }} // Prevents zoom on iOS
                   />
                   {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}
                 </div>
   
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label htmlFor="time" className="block text-sm font-semibold text-gray-700 mb-2">
                     Preferred Time *
                   </label>
                   <input
                     type="time"
+                    id="time"
                     name="time"
                     value={bookingData.time}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors bg-white"
+                    style={{ fontSize: '16px' }} // Prevents zoom on iOS
                   />
                   {errors.time && <p className="text-red-500 text-xs mt-1">{errors.time}</p>}
                 </div>
@@ -344,15 +387,25 @@ const BookingForm = ({ serviceId, onClose }) => {
                     onChange={handleChange}
                     rows="3"
                     placeholder="Enter your full address..."
-                    className="w-full px-3 py-2 text-sm border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors resize-none"
+                    className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-lg focus:border-blue-500 transition-colors resize-none bg-white"
+                    style={{ fontSize: '16px' }} // Prevents zoom on iOS
                   />
                   <button
                     type="button"
                     onClick={handleFetchLocation}
                     disabled={fetchingLocation}
-                    className="w-full sm:w-auto px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 font-medium"
+                    className="w-full sm:w-auto px-6 py-3 text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 font-medium min-h-[44px]"
                   >
-                    {fetchingLocation ? 'Getting Location...' : 'Use Current Location'}
+                    {fetchingLocation ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        Getting Location...
+                      </>
+                    ) : (
+                      <>
+                        📍 Use Current Location
+                      </>
+                    )}
                   </button>
                 </div>
                 {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
@@ -482,6 +535,9 @@ const BookingForm = ({ serviceId, onClose }) => {
         isOpen={showSuccessModal} 
         onClose={() => {
           setShowSuccessModal(false);
+          // Restore body scroll
+          document.body.style.overflow = 'auto';
+          document.body.classList.remove('modal-open');
           onClose();
         }} 
         bookingData={successBookingData} 
@@ -539,7 +595,7 @@ const BookingForm = ({ serviceId, onClose }) => {
           <button
             onClick={handlePrev}
             disabled={currentStep === 1}
-            className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
+            className="step-nav-btn px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold"
           >
             Previous
           </button>
@@ -561,7 +617,7 @@ const BookingForm = ({ serviceId, onClose }) => {
           {currentStep < steps.length ? (
             <button
               onClick={handleNext}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+              className="step-nav-btn px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
             >
               Next
             </button>
@@ -569,9 +625,16 @@ const BookingForm = ({ serviceId, onClose }) => {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors font-semibold"
+              className="step-nav-btn px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors font-semibold"
             >
-              {loading ? 'Processing...' : `Pay ₹${service.price}`}
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block mr-2"></div>
+                  Processing...
+                </>
+              ) : (
+                `Pay ₹${service.price}`
+              )}
             </button>
           )}
         </div>

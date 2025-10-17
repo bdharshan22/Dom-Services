@@ -1,0 +1,119 @@
+/* Payment Success Modal Styles */
+.payment-success-modal {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+.payment-success-modal .modal-content {
+  position: relative !important;
+  z-index: 100000 !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  width: 100% !important;
+  max-width: 28rem !important;
+  background: white !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Ensure modal is always visible */
+.payment-success-modal.show {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+  .payment-success-modal {
+    padding: 0.5rem !important;
+  }
+  
+  .payment-success-modal .modal-content {
+    max-height: 95vh !important;
+    margin: 0 !important;
+  }
+  
+  /* Prevent iOS bounce scroll */
+  .payment-success-modal .modal-content {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Animation classes */
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.modal-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* High z-index for all modal elements */
+.payment-success-modal * {
+  z-index: inherit;
+}
+
+/* Ensure buttons are clickable */
+.payment-success-modal button {
+  position: relative;
+  z-index: 100001 !important;
+  pointer-events: auto !important;
+}
+
+/* Loading state for payment button */
+.payment-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.payment-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
