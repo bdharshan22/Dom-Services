@@ -12,10 +12,10 @@ const PaymentSuccessModal = ({ isOpen, onClose, bookingData }) => {
       // Show modal immediately
       setShowModal(true);
       
-      // Auto-close after 8 seconds
+      // Auto-close after 1 second
       const autoCloseTimer = setTimeout(() => {
         handleClose();
-      }, 8000);
+      }, 1000);
       
       return () => {
         clearTimeout(autoCloseTimer);
@@ -24,7 +24,14 @@ const PaymentSuccessModal = ({ isOpen, onClose, bookingData }) => {
   }, [isOpen]);
 
   const handleClose = () => {
-    hidePaymentSuccessModal(setShowModal, onClose);
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+    document.body.classList.remove('modal-open');
+    
+    setShowModal(false);
+    setTimeout(() => {
+      onClose();
+    }, 500);
   };
 
   if (!isOpen) return null;
@@ -158,7 +165,7 @@ const PaymentSuccessModal = ({ isOpen, onClose, bookingData }) => {
             <button
               onClick={() => {
                 handleClose();
-                setTimeout(() => window.location.href = '/bookings', 100);
+                setTimeout(() => window.location.href = '/bookings', 500);
               }}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg transition-all duration-300"
             >
