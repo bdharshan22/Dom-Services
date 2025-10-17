@@ -74,6 +74,9 @@ const BookingForm = ({ serviceId, onClose }) => {
           newErrors.mobile = 'Mobile number must be 10 digits';
         }
         break;
+      case 4:
+        // Step 4 is review step - no validation needed, always allow to proceed
+        break;
     }
     
     setErrors(newErrors);
