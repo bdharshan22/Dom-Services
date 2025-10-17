@@ -179,8 +179,6 @@ const BookingForm = ({ serviceId, onClose }) => {
                 razorpay_signature: response.razorpay_signature,
               });
 
-              console.log('Verification response:', verificationResponse);
-
               if (verificationResponse.status === 201) {
                 const bookingResult = verificationResponse.data.booking;
                 const successData = {
@@ -192,26 +190,18 @@ const BookingForm = ({ serviceId, onClose }) => {
                   bookingId: bookingResult._id
                 };
                 
-                setSuccessBookingData(successData);
-                
-                // Show success notification immediately
+                // Show success immediately
                 toast.success('🎉 Payment successful! Booking confirmed!');
-                
-                // Show modal immediately without delay
                 setSuccessBookingData(successData);
                 setShowSuccessModal(true);
                 document.body.style.overflow = 'hidden';
                 document.body.classList.add('modal-open');
                 
-                // Vibrate on mobile for feedback
                 if ('vibrate' in navigator) {
                   navigator.vibrate([200, 100, 200]);
                 }
                 
-                const count = parseInt(localStorage.getItem('bookingCount') || '0') + 1;
-                localStorage.setItem('bookingCount', count.toString());
-                
-                console.log('Payment success modal should be showing now');
+                localStorage.setItem('bookingCount', (parseInt(localStorage.getItem('bookingCount') || '0') + 1).toString());
               } else {
                 throw new Error('Payment verification failed');
               }

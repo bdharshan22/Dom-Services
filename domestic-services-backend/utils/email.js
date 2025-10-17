@@ -35,11 +35,15 @@ class EmailService {
   }
 
   async sendBookingConfirmation(email, bookingDetails) {
+    const { serviceName, date, time, bookingId, amount, paymentId } = bookingDetails;
+    
+    // Check if email credentials are configured
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.log('⚠️ Email not configured, skipping email send');
+      return { status: 'skipped', reason: 'credentials not configured' };
+    }
+    
     try {
-      console.log('📧 Email service received data:', bookingDetails);
-      const { serviceName, date, time, bookingId, amount, paymentId } = bookingDetails;
-      console.log('💳 Payment details extracted:', { amount, paymentId });
-      
       const subject = 'Booking Confirmed & Payment Successful - Domestic Services';
       const html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
@@ -89,22 +93,17 @@ class EmailService {
       `;
       
       const result = await this.sendEmail(email, subject, html);
-      console.log('✅ Email sent successfully:', result.messageId);
-      return result;
+      console.log('✅ Email sent successfully');
+      return { status: 'sent', messageId: result.messageId };
     } catch (error) {
-      console.log('\n=== EMAIL NOTIFICATION ===');
-      console.log('📧 TO:', email);
-      console.log('📋 SUBJECT: Service Booked & Payment Successful - Domestic Services');
-      console.log('📝 BOOKING & PAYMENT DETAILS:');
-      console.log(`Service: ${bookingDetails.serviceName}`);
-      console.log(`Date: ${bookingDetails.date}`);
-      console.log(`Time: ${bookingDetails.time}`);
-      console.log(`Booking ID: ${bookingDetails.bookingId}`);
-      console.log(`Amount Paid: ₹${bookingDetails.amount}`);
-      console.log(`Payment ID: ${bookingDetails.paymentId || 'N/A'}`);
-      console.log(`Payment Status: SUCCESSFUL`);
-      console.log('========================\n');
-      return { messageId: 'logged-' + Date.now() };
+      console.error('❌ Email send failed:', error.message);
+      // Log email details for debugging
+      console.log('EMAIL DETAILS:', {
+        to: email,
+        service: serviceName,
+        date, time, bookingId, amount, paymentId
+      });
+      return { status: 'failed', error: error.message };
     }
   }
 

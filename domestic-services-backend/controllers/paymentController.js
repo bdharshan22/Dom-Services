@@ -73,8 +73,7 @@ export const createOrder = async (req, res) => {
 // Verify payment and create booking
 export const verifyPayment = async (req, res) => {
   try {
-    console.log('=== PAYMENT VERIFICATION START ===');
-    console.log('Request body:', req.body);
+    console.log('Payment verification started');
 
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
@@ -96,11 +95,7 @@ export const verifyPayment = async (req, res) => {
       .update(sign.toString())
       .digest('hex');
 
-    console.log('Signature verification:', {
-      provided: razorpay_signature,
-      expected: expectedSign,
-      match: razorpay_signature === expectedSign
-    });
+    // Signature verification
 
     if (razorpay_signature !== expectedSign) {
       console.error('Payment signature verification failed');
@@ -108,10 +103,7 @@ export const verifyPayment = async (req, res) => {
     }
 
     // Get order details
-    console.log('Fetching order details for:', razorpay_order_id);
     const order = await razorpay.orders.fetch(razorpay_order_id);
-    console.log('Order details:', order);
-    console.log('Order notes:', order.notes);
 
     // Validate that all required fields are present
     const requiredFields = ['userId', 'serviceId', 'date', 'time', 'location', 'mobile'];
@@ -138,26 +130,14 @@ export const verifyPayment = async (req, res) => {
     } = order.notes;
     const amount = order.amount / 100; // Convert back from paisa
 
-    console.log('Extracted booking data:', {
-      userId,
-      serviceId,
-      date,
-      time,
-      location,
-      mobile,
-      email,
-      fullName,
-      amount
-    });
+    // Extracted booking data
 
-    // Safely parse location
+    // Parse location
     let parsedLocation;
     try {
       parsedLocation = JSON.parse(location);
-      console.log('Successfully parsed location:', parsedLocation);
     } catch (parseError) {
-      console.error('Error parsing location:', parseError);
-      parsedLocation = location; // Fallback to string if parsing fails
+      parsedLocation = location;
     }
 
     // Create booking
@@ -181,7 +161,7 @@ export const verifyPayment = async (req, res) => {
       paymentIntentId: razorpay_payment_id
     };
 
-    console.log('Creating booking with data:', bookingData);
+    // Creating booking
 
     // Check if Booking model is available
     if (!Booking) {
@@ -192,44 +172,32 @@ export const verifyPayment = async (req, res) => {
     const booking = await Booking.create(bookingData);
     console.log('Booking created successfully:', booking._id);
 
-    // Fetch service details for notifications
-    let serviceName = 'Service';
-    try {
-      const service = await Service.findById(serviceId);
-      if (service) {
-        serviceName = service.name;
-      }
-    } catch (serviceError) {
-      console.error('Error fetching service details:', serviceError.message);
-    }
-
-    // Send notifications
-    console.log('\n=== SENDING EMAIL NOTIFICATION ===');
-    console.log('Email:', email);
-    console.log('Service:', serviceName);
-    
-    try {
-      const notificationResult = await notificationService.sendBookingConfirmation({
-        email,
-        serviceName,
-        date,
-        time,
-        bookingId: booking._id,
-        amount,
-        paymentId: razorpay_payment_id
-      });
-      console.log('\u2705 Email notification completed');
-      console.log('Email result:', notificationResult);
-    } catch (notificationError) {
-      console.error('\u274c Email notification error:', notificationError.message);
-    }
-    console.log('==============================\n');
-
-    console.log('=== PAYMENT VERIFICATION SUCCESS ===');
-
+    // Send response immediately
     res.status(201).json({
       message: 'Payment verified and booking created successfully',
       booking
+    });
+
+    // Send email notification asynchronously (don't wait for it)
+    setImmediate(async () => {
+      try {
+        let serviceName = 'Service';
+        const service = await Service.findById(serviceId);
+        if (service) serviceName = service.name;
+
+        await notificationService.sendBookingConfirmation({
+          email,
+          serviceName,
+          date,
+          time,
+          bookingId: booking._id,
+          amount,
+          paymentId: razorpay_payment_id
+        });
+        console.log('✅ Email sent successfully');
+      } catch (error) {
+        console.error('❌ Email failed:', error.message);
+      }
     });
   } catch (error) {
     console.error('=== PAYMENT VERIFICATION ERROR ===');
