@@ -181,6 +181,8 @@ const BookingForm = ({ serviceId, onClose }) => {
 
               if (verificationResponse.status === 201) {
                 const bookingResult = verificationResponse.data.booking;
+                const emailStatus = verificationResponse.data.emailStatus;
+                
                 const successData = {
                   serviceName: service.name,
                   date: bookingData.date,
@@ -190,8 +192,17 @@ const BookingForm = ({ serviceId, onClose }) => {
                   bookingId: bookingResult._id
                 };
                 
-                // Show success immediately
+                // Show success with email status
                 toast.success('🎉 Payment successful! Booking confirmed!');
+                
+                if (emailStatus === 'sent') {
+                  toast.success('📧 Confirmation email sent!');
+                } else if (emailStatus === 'failed') {
+                  toast.warn('⚠️ Email failed - Check spam folder');
+                } else {
+                  toast.info('📧 Email notification processing...');
+                }
+                
                 setSuccessBookingData(successData);
                 setShowSuccessModal(true);
                 document.body.style.overflow = 'hidden';

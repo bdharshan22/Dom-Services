@@ -18,6 +18,10 @@ class EmailService {
 
   async sendEmail(to, subject, html) {
     try {
+      // Verify transporter configuration
+      await this.transporter.verify();
+      console.log('✅ SMTP connection verified');
+      
       const mailOptions = {
         from: `"Domestic Services" <${process.env.EMAIL_USER}>`,
         to,
@@ -26,10 +30,17 @@ class EmailService {
         replyTo: process.env.EMAIL_USER
       };
 
+      console.log('📧 Sending email to:', to);
       const result = await this.transporter.sendMail(mailOptions);
+      console.log('✅ Email sent with messageId:', result.messageId);
       return result;
     } catch (error) {
-      console.error('Email sending error:', error.message);
+      console.error('❌ Email sending error:', error.message);
+      console.error('❌ Email config check:', {
+        user: !!process.env.EMAIL_USER,
+        pass: !!process.env.EMAIL_PASS,
+        to
+      });
       throw error;
     }
   }
