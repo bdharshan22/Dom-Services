@@ -170,36 +170,29 @@ export const verifyPayment = async (req, res) => {
     }
 
     const booking = await Booking.create(bookingData);
-    console.log('Booking created successfully:', booking._id);
 
-    // Send email notification synchronously to verify it works
-    let emailStatus = 'pending';
-    try {
-      let serviceName = 'Service';
-      const service = await Service.findById(serviceId);
-      if (service) serviceName = service.name;
-
-      const emailResult = await notificationService.sendBookingConfirmation({
-        email,
-        serviceName,
-        date,
-        time,
-        bookingId: booking._id,
-        amount,
-        paymentId: razorpay_payment_id
-      });
-      emailStatus = emailResult.status || 'sent';
-      console.log('✅ Email result:', emailResult);
-    } catch (error) {
-      emailStatus = 'failed';
-      console.error('❌ Email failed:', error.message);
-    }
-
-    // Send response with email status
+    // Send response immediately
     res.status(201).json({
       message: 'Payment verified and booking created successfully',
-      booking,
-      emailStatus
+      booking
+    });
+
+    // Send email asynchronously
+    process.nextTick(async () => {
+      try {
+        const service = await Service.findById(serviceId);
+        await notificationService.sendBookingConfirmation({
+          email,
+          serviceName: service?.name || 'Service',
+          date,
+          time,
+          bookingId: booking._id,
+          amount,
+          paymentId: razorpay_payment_id
+        });
+      } catch (error) {
+        console.error('Email failed:', error.message);
+      }
     });
   } catch (error) {
     console.error('=== PAYMENT VERIFICATION ERROR ===');
