@@ -102,7 +102,7 @@ const sampleServices = [
     description: "Security camera setup and maintenance.",
     price: 3500,
     category: "security",
-    image: "https://media.istockphoto.com/id/1446045839/photo/outdoor-security-camera-cctv-secure-monitoring-concept-3d-rendering.jpg?s=1024x1024&w=is&k=20&c=o6kTFdBbaavEU4SwU8HzWI0_MYAdhekpaH2Rq4UCbAQ="
+    image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400"
   },
   {
     name: "Sofa Cleaning",
