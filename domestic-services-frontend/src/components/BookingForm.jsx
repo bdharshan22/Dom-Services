@@ -124,24 +124,12 @@ const BookingForm = ({ serviceId, onClose }) => {
           // Get full address using reverse geocoding
           const response = await api.get(`/location/reverse-geocode?lat=${lat}&lng=${lng}`);
           const fullAddress = response.data.address || `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-          const locationData = {
-            address: fullAddress,
-            coordinates: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
-            lat: lat,
-            lng: lng
-          };
-          setBookingData(prev => ({ ...prev, location: JSON.stringify(locationData) }));
+          setBookingData(prev => ({ ...prev, location: fullAddress }));
           toast.success('Location fetched successfully!');
         } catch (error) {
           // Fallback to coordinates if reverse geocoding fails
           const coordinates = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-          const locationData = {
-            address: coordinates,
-            coordinates: coordinates,
-            lat: lat,
-            lng: lng
-          };
-          setBookingData(prev => ({ ...prev, location: JSON.stringify(locationData) }));
+          setBookingData(prev => ({ ...prev, location: coordinates }));
           toast.success('Location coordinates added successfully!');
         }
         setFetchingLocation(false);
@@ -512,16 +500,7 @@ const BookingForm = ({ serviceId, onClose }) => {
                   </div>
                    <div className="flex justify-between">
                     <span className="text-gray-600">Location:</span>
-                    <span className="font-medium text-right break-all">
-                      {(() => {
-                        try {
-                          const loc = JSON.parse(bookingData.location);
-                          return loc.address || loc.coordinates;
-                        } catch {
-                          return bookingData.location;
-                        }
-                      })()}
-                    </span>
+                    <span className="font-medium text-right break-all">{bookingData.location}</span>
                   </div>
                   <hr className="my-2" />
                   <div className="flex justify-between items-center">

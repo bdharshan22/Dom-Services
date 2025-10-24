@@ -18,44 +18,57 @@ router.get('/reverse-geocode', async (req, res) => {
 
     console.log(`Fetching address for coordinates: ${lat}, ${lng}`);
     
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=en&addressdetails=1`,
-      {
-        headers: {
-          'User-Agent': 'DomesticServices/1.0'
+    // Try multiple geocoding services
+    let formattedAddress = null;
+    
+    // Try OpenStreetMap first
+    try {
+      const osmResponse = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=en&addressdetails=1`,
+        {
+          headers: {
+            'User-Agent': 'DomesticServices/1.0'
+          }
+        }
+      );
+      
+      if (osmResponse.ok) {
+        const osmData = await osmResponse.json();
+        if (osmData.display_name) {
+          formattedAddress = osmData.display_name;
         }
       }
-    );
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    } catch (osmError) {
+      console.log('OSM geocoding failed, trying alternative');
     }
     
-    const data = await response.json();
-    console.log('Geocoding response:', data);
-    
-    // Format a more readable address
-    let formattedAddress = data.display_name;
-    if (data.address) {
-      const addr = data.address;
-      const parts = [];
-      if (addr.house_number) parts.push(addr.house_number);
-      if (addr.road) parts.push(addr.road);
-      if (addr.neighbourhood) parts.push(addr.neighbourhood);
-      if (addr.suburb) parts.push(addr.suburb);
-      if (addr.city || addr.town || addr.village) parts.push(addr.city || addr.town || addr.village);
-      if (addr.state) parts.push(addr.state);
-      if (addr.postcode) parts.push(addr.postcode);
-      
-      if (parts.length > 0) {
-        formattedAddress = parts.join(', ');
+    // Try alternative geocoding service if OSM fails
+    if (!formattedAddress) {
+      try {
+        const altResponse = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+        );
+        
+        if (altResponse.ok) {
+          const altData = await altResponse.json();
+          if (altData.locality || altData.city) {
+            const parts = [];
+            if (altData.locality) parts.push(altData.locality);
+            if (altData.city) parts.push(altData.city);
+            if (altData.principalSubdivision) parts.push(altData.principalSubdivision);
+            if (altData.countryName) parts.push(altData.countryName);
+            formattedAddress = parts.join(', ');
+          }
+        }
+      } catch (altError) {
+        console.log('Alternative geocoding also failed');
       }
     }
     
     res.json({
-      address: formattedAddress || `${lat}, ${lng}`,
+      address: formattedAddress || `Location: ${lat}, ${lng}`,
       coordinates: `${lat}, ${lng}`,
-      success: true
+      success: !!formattedAddress
     });
   } catch (error) {
     console.error('Reverse geocoding error:', error.message);
