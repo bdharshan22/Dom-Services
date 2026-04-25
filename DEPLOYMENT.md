@@ -15,6 +15,7 @@
    - Start Command: `npm start`
 
 4. **Add Environment Variables in Render:**
+5. 
    ```
    NODE_ENV=production
    MONGO_URI=your_mongodb_connection_string
@@ -25,7 +26,7 @@
    EMAIL_PASS=your_email_password
    ```
 
-5. **Deploy and get your Render URL** (e.g., https://your-app.onrender.com)
+6. **Deploy and get your Render URL** (e.g., https://your-app.onrender.com)
 
 ## Frontend Deployment (Vercel)
 
